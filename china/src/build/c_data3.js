@@ -171,6 +171,7 @@ TRIP.contextLabels = [
 ];
 
 TRIP.sourcesList = [
+["Wikipedia: climate normals 1991–2020, used for the next-stop weather","https://en.wikipedia.org/wiki/Lanzhou"],
 ["Caravanistan: Irkeshtam pass","https://caravanistan.com/border-crossings/kyrgyzstan/irkeshtam-pass/"],
 ["note.com: Kashgar → Osh international bus (Aug 2026)","https://note.com/urakawa_/n/ncd31c1bf4426"],
 ["Caravanistan forum: Irkeshtam pass reports (2025–26)","https://caravanistan.com/forum/viewtopic.php?t=955&start=110"],
@@ -241,3 +242,32 @@ TRIP.sourcesList = [
 
 ["Natural Earth: mountain ranges, lakes and rivers on the map (public domain)","https://www.naturalearthdata.com/"]
 ];
+
+/* Regions colour the stop numbers, the journey strip and the map. Hekou (18) sits with Yunnan: its night there is on the Chinese side. */
+TRIP.regions = [
+{k:1,name:"Silk Road desert",stops:[1,2,3,4,5]},
+{k:2,name:"Yellow River and Tibetan edge",stops:[6,7]},
+{k:3,name:"Old capital",stops:[8,9,10]},
+{k:4,name:"Sichuan basin",stops:[11,12,13,14]},
+{k:5,name:"Yunnan",stops:[15,16,17,18,20,21,22]},
+{k:6,name:"Vietnam",stops:[19,23]}
+];
+TRIP.visa = "2026-12-05";
+TRIP.py = {1:"Yī'ěrkèshítǎn kǒu'àn",2:"Kāshí",3:"Tǔlǔfān běi zhàn",4:"Dūnhuáng",5:"Dūnhuáng Yǎdān",6:"Lánzhōu",7:"Xiàhé, Lābǔléng sì",8:"Xī'ān",9:"Bīngmǎyǒng",10:"Huàshān",
+11:"Chéngdū",12:"Éméi shān, Bàoguó sì",13:"Lèshān dàfó",14:"Chóngqìng",15:"Shāxī gǔzhèn",16:"Nuòdèng gǔcūn",17:"Kūnmíng",18:"Hékǒu kǒu'àn",20:"Jiànshuǐ",21:"Yuányáng tītián, Pǔgāo lǎozhài",22:"Jīnpíng"};
+/* Climate normals 1991–2020 from Wikipedia's tables: month -> [mean daily max, mean daily min, wet days], rounded. Shown for the next stop only. */
+TRIP.wx = {
+6:{alt:1517,m:{11:[10,-1,2],12:[4,-7,1]}},
+7:{alt:2948,m:{11:[8,-8,3],12:[4,-14,2]}},
+8:{alt:445,m:{11:[13,3,6],12:[7,-3,4]}},
+11:{alt:495,m:{11:[17,10,8],12:[11,5,7]}},
+12:{alt:424,at:"the town at the foot; the 3,099 m summit is far colder",m:{11:[17,12,12],12:[11,7,10]}},
+14:{alt:259,m:{11:[17,13,11],12:[12,8,11]}},
+15:{alt:2191,at:"Jianchuan county station",m:{11:[19,3,4],12:[16,-2,2]}},
+16:{alt:1724,at:"Yunlong county station",m:{11:[22,7,5],12:[19,2,2]}},
+17:{alt:1888,m:{11:[19,8,5],12:[16,5,4]}},
+20:{alt:1309,m:{12:[19,8,4]}},
+21:{at:"Xinjie, the terrace town",m:{12:[17,8,null]}},
+22:{alt:1260,m:{12:[17,10,7]}},
+23:{m:{12:[21,14,5]}}
+};

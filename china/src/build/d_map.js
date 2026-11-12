@@ -2,6 +2,8 @@
 const T = window.TRIP;
 const S = {}; T.stops.forEach(s => { S[s.n] = s; });
 const doc = document;
+const RG = {}; (T.regions || []).forEach(r => r.stops.forEach(n => { RG[n] = r; }));
+const rgc = n => RG[n] ? ' rg rg' + RG[n].k : '';
 const $ = (q, el) => (el || doc).querySelector(q);
 const reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 const esc = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -319,7 +321,7 @@ function drawMarkers(L) {
     return g;
   });
   mk.attr('transform', d => 'translate(' + d.q[0].toFixed(1) + ',' + d.q[1].toFixed(1) + ')')
-    .attr('class', d => 'mk' + (d.s.kind === 'pass' ? ' pass' : '') + (d.s.opt ? ' opt' : '') + (isPast(d.s.n) && d.s.n !== sel ? ' past' : '') + (d.s.n === sel ? ' sel' : ''))
+    .attr('class', d => 'mk' + (d.s.kind === 'pass' ? ' pass' : '') + (d.s.opt ? ' opt' : '') + (isPast(d.s.n) && d.s.n !== sel ? ' past' : '') + (d.s.n === sel ? ' sel' : '') + rgc(d.s.n))
     .attr('aria-label', d => 'Stop ' + d.s.n + ': ' + d.s.name + ', ' + d.s.dates);
   mk.select('text').text(d => d.s.n);
   mk.select('.pulse').style('display', d => d.s.n === today && TODAY >= TRIP_START && TODAY <= TRIP_END ? null : 'none');

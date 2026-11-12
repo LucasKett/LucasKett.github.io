@@ -120,10 +120,28 @@ const stopLinks = s => {
 const nightsWord = s => s.len;
 
 /* ---------- route: stop cards ---------- */
+/* thumbnail of the whole route for each stop card: one shared outline, then this stop's legs and dot on top */
+const MM = (() => {
+  const legs = T.legs.filter(L => !L.opt), pts = T.stops.map(s => [s.lon, s.lat]);
+  legs.forEach(L => L.segs.forEach(sg => segPts(sg).forEach(p => pts.push(p))));
+  const xs = pts.map(p => p[0]), ys = pts.map(p => p[1]);
+  const lo = Math.min.apply(null, xs), hi = Math.max.apply(null, xs), la = Math.min.apply(null, ys), lb = Math.max.apply(null, ys);
+  const k = Math.cos((la + lb) / 2 * Math.PI / 180), W = 120, pad = 8, sc = (W - 2 * pad) / ((hi - lo) * k), H = Math.round((lb - la) * sc + 2 * pad);
+  const xy = p => [(pad + (p[0] - lo) * k * sc).toFixed(1), (pad + (lb - p[1]) * sc).toFixed(1)];
+  const path = L => L.segs.map(sg => { const q = segPts(sg).map(xy); return q.length > 1 ? 'M' + q.map(a => a.join(' ')).join('L') : ''; }).join('');
+  const base = '<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="mmbase" viewBox="0 0 ' + W + ' ' + H + '"><path class="mm-route" d="' + legs.map(path).join('') + '"/>' +
+    T.stops.map(s => { const c = xy([s.lon, s.lat]); return '<circle class="mm-dot" cx="' + c[0] + '" cy="' + c[1] + '" r="1.5"/>'; }).join('') + '</symbol></svg>';
+  return { W, H, xy, path, base };
+})();
+function miniMap(s) {
+  const c = MM.xy([s.lon, s.lat]), hot = legsFor(s.n).filter(L => !L.opt).map(MM.path).join('');
+  return '<svg class="minimap' + rgc(s.n) + '" viewBox="0 0 ' + MM.W + ' ' + MM.H + '" role="img" aria-label="' + esc(s.name) + ' on the route"><use href="#mmbase"/>' +
+    (hot ? '<path class="mm-hot" d="' + hot + '"/>' : '') + '<circle class="mm-here" cx="' + c[0] + '" cy="' + c[1] + '" r="4.2"/></svg>';
+}
 function stopCard(s) {
   const n = s.n, legs = legsFor(n);
-  let body = '<p class="d-what"><a href="' + esc(gsearch(s.q)) + '" target="_blank" rel="noopener">' + esc(s.name) + '</a>' + (s.what ? ' (' + esc(s.what) + ')' : '') + '</p>' +
-    '<p class="blurb">' + rich(s.blurb) + '</p>';
+  let body = '<div class="s-intro">' + miniMap(s) + '<p class="d-what"><a href="' + esc(gsearch(s.q)) + '" target="_blank" rel="noopener">' + esc(s.name) + '</a>' + (s.what ? ' (' + esc(s.what) + ')' : '') + '</p>' +
+    '<p class="blurb">' + rich(s.blurb) + '</p></div>';
   if (s.plan && s.plan.length) body += '<ul class="plan">' + s.plan.map(p => '<li><span class="when">' + esc(p[0]) + '</span><span>' + rich(p[1]) + '</span></li>').join('') + '</ul>';
   if (legs.length) body += sub('Getting here and on', legs.map(L => legCard(L, n)).join(''), legs.length);
   let sleep = '';
@@ -136,12 +154,15 @@ function stopCard(s) {
   body += stopLinks(s);
   const here = s.n === state.today && inTrip;
   return '<details class="stop' + (isPast(n) ? ' past' : '') + '" name="stop" id="s' + n + '" data-n="' + n + '"><summary>' +
-    '<span class="badge' + (s.kind === 'pass' ? ' pass' : '') + (here ? ' sel' : '') + '" aria-hidden="true">' + n + '</span>' +
-    '<span class="s-main"><span class="s-name">' + esc(s.name) + '</span><span class="s-dates">' + esc(s.dates) + ' · ' + esc(nightsWord(s)) + '</span></span>' + CHEV +
+    '<span class="badge' + (s.kind === 'pass' ? ' pass' : '') + (here ? ' sel' : '') + rgc(n) + '" aria-hidden="true">' + n + '</span>' +
+    '<span class="s-main"><span class="s-name">' + esc(s.name) + '</span>' + (s.zh ? '<span class="s-zh" lang="zh">' + esc(s.zh) + (T.py && T.py[n] ? '<span lang="zh-Latn"> · ' + esc(T.py[n]) + '</span>' : '') + '</span>' : '') + '<span class="s-dates">' + esc(s.dates) + ' · ' + esc(nightsWord(s)) + '</span></span>' + CHEV +
     '</summary><div class="sbody">' + body + '</div></details>';
 }
 function renderStops() {
-  $('#stoplist').innerHTML = T.stops.map(stopCard).join('');
+  let last = 0;
+  $('#stoplist').innerHTML = MM.base + T.stops.map(s => { const r = RG[s.n]; let h = '';
+    if (r && r.k !== last) { last = r.k; h = '<h3 class="rgh rg rg' + r.k + '"><i aria-hidden="true"></i>' + esc(r.name) + '</h3>'; }
+    return h + stopCard(s); }).join('');
   $('#stopsum').textContent = T.stops.length + ' stops · tap one to open it';
 }
 
@@ -234,8 +255,27 @@ function dayRow(r, cls) {
   const c = 'day' + (r[4] ? ' travel' : '') + (d < TODAY ? ' past' : '') + (d === TODAY ? ' now' : '') + (cls ? ' ' + cls : '');
   return '<li class="' + c + '" data-goto="' + n + '" tabindex="0" role="button" aria-label="' + esc(fmtDay(d) + ': ' + r[2]) + '">' +
     '<div class="date">' + dt.getDate() + ' ' + MON[dt.getMonth()] + '<span class="dow">' + DOW[dt.getDay()] + '</span></div>' +
-    '<div><div class="where"><span class="dnum' + (S[n].kind === 'pass' ? ' pass' : '') + '" aria-hidden="true">' + n + '</span>' + esc(r[2]) + (r[4] ? ' <span class="pill tag">Travel</span>' : '') + (d === TODAY ? ' <span class="pill acc tag">Today</span>' : '') + '</div>' +
+    '<div><div class="where"><span class="dnum' + (S[n].kind === 'pass' ? ' pass' : '') + rgc(n) + '" aria-hidden="true">' + n + '</span>' + esc(r[2]) + (r[4] ? ' <span class="pill tag">Travel</span>' : '') + (d === TODAY ? ' <span class="pill acc tag">Today</span>' : '') + '</div>' +
     '<div class="what">' + esc(r[3]) + '</div>' + (d >= TODAY ? legsOn(d).map(dayLeg).join('') : '') + '</div></li>';
+}
+const hav = (a, b) => { const r = Math.PI / 180, x = Math.sin((b[1] - a[1]) * r / 2), y = Math.sin((b[0] - a[0]) * r / 2);
+  return 12742 * Math.asin(Math.sqrt(x * x + Math.cos(a[1] * r) * Math.cos(b[1] * r) * y * y)); };
+const legKm = L => L.segs.reduce((t, sg) => { const p = segPts(sg); for (let j = 1; j < p.length; j++) t += hav(p[j - 1], p[j]); return t; }, 0);
+function renderJourney() {
+  const N = T.days.length, idx = TODAY < TRIP_START ? -1 : TODAY > TRIP_END ? N : T.days.findIndex(x => x[0] === TODAY);
+  const cells = T.days.map((r, j) => '<i class="' + (j < idx ? 'past' : j === idx ? 'now' : '') + rgc(r[1]) + '"></i>').join('');
+  const legs = T.legs.filter(L => !L.opt), tot = legs.reduce((a, L) => a + legKm(L), 0), done = legs.filter(L => L.date < TODAY).reduce((a, L) => a + legKm(L), 0);
+  const km = v => (Math.round(v / 100) * 100).toLocaleString('en-GB');
+  const cur = idx >= 0 && idx < N ? RG[T.days[idx][1]] : null, nx = cur ? T.days.slice(idx + 1).find(x => RG[x[1]] && RG[x[1]].k !== cur.k) : null;
+  const vi = T.visa && TODAY <= T.visa ? T.days.findIndex(x => x[0] === T.visa) : -1, vd = vi >= 0 ? daysFrom(TODAY < TRIP_START ? TRIP_START : TODAY, T.visa) : 0;
+  const a = parseISO(TRIP_START), b = parseISO(TRIP_END), short = dt => dt.getDate() + ' ' + MON[dt.getMonth()];
+  const seen = {}, key = T.days.map(r => RG[r[1]]).filter(r => r && !seen[r.k] && (seen[r.k] = 1));
+  $('#journey').innerHTML = '<section class="journey" aria-label="Trip progress">' +
+    '<div class="j-head"><span>' + (idx < 0 ? 'Not started' : idx >= N ? 'Done' : '<b>Day ' + (idx + 1) + '</b> of ' + N) + '</span><span>' + (idx >= 0 && idx < N ? (N - idx - 1) + ' to go · ' : '') + 'about ' + km(done) + ' of ' + km(tot) + ' km</span></div>' +
+    '<div class="j-bar" style="--n:' + N + '" role="img" aria-label="One block for each day, coloured by region">' + cells + '</div>' +
+    '<div class="j-marks" style="--n:' + N + '"><span class="j-a">' + short(a) + '</span>' + (vi >= 0 ? '<span class="j-visa" style="grid-column:1 / span ' + (vi + 1) + '">visa limit ' + esc(fmtDay(T.visa)) + ' ▴</span>' : '') + '<span class="j-b">' + short(b) + '</span></div>' +
+    (cur ? '<p class="j-now"><b>' + esc(cur.name) + '</b> now.' + (nx ? ' Next: ' + esc(RG[nx[1]].name) + ', ' + esc(fmtDay(nx[0])) + '.' : '') + (vi >= 0 ? ' ' + vd + ' day' + (vd === 1 ? '' : 's') + ' left on the visa.' : '') + '</p>' : '') +
+    '<ul class="j-key">' + key.map(r => '<li class="rg rg' + r.k + (cur && cur.k === r.k ? ' cur' : '') + '"><i aria-hidden="true"></i>' + esc(r.name) + '</li>').join('') + '</ul></section>';
 }
 function renderToday() {
   let h = '';
@@ -266,9 +306,15 @@ function renderToday() {
     else if (bed) h += trow('Tonight', '<span><b>' + esc(bed.name) + '</b>' + (bed.price ? ' · ' + esc(bed.price) : '') + '</span>' + contactsOf({ contacts: (bed.contacts || []).slice(0, 1) }));
     const nx = T.days[i + 1];
     if (nx) h += trow('Tomorrow', '<span><b>' + esc(nx[2]) + '</b>' + (nx[4] ? ' <span class="pill tag">Travel</span>' : '') + '</span><span class="minor">' + esc(nx[3]) + '</span>' + legsOn(nx[0]).map(dayLeg).join(''));
+    const ahead = T.days.slice(i + 1).find(x => x[1] !== s.n && S[x[1]].kind === 'stay');
+    const wx = ahead && T.wx && T.wx[ahead[1]], mo = ahead && +ahead[0].slice(5, 7), w = wx && wx.m[mo];
+    if (w) { const deg = v => (v < 0 ? '−' : '') + Math.abs(v) + '°';
+      h += trow('Next stop', '<span><b>' + esc(S[ahead[1]].name) + '</b> from ' + esc(fmtDay(ahead[0])) + '</span><span class="minor">Typical ' + ['', '', '', '', '', '', '', '', '', '', '', 'November', 'December'][mo] + ': ' + deg(w[0]) + ' by day, ' + deg(w[1]) + ' at night' +
+        (w[2] != null ? ', about ' + w[2] + ' wet day' + (w[2] === 1 ? '' : 's') + ' in the month' : '') + '.' + (wx.alt ? ' ' + wx.alt.toLocaleString('en-GB') + ' m up.' : '') + (wx.at ? ' Measured at ' + esc(wx.at) + '.' : '') + '</span>'); }
     h += '<div class="t-acts">' + gotoBtn(s.n, 'Open ' + s.name) + '<label class="btn-sm" for="ms-' + s.n + '">On the map</label></div>';
   }
   $('#todaycard').innerHTML = '<article class="today">' + h + '</article>';
+  renderJourney();
   const from = TODAY < TRIP_START ? 0 : Math.max(0, T.days.findIndex(x => x[0] > TODAY));
   const up = TODAY > TRIP_END ? [] : T.days.slice(from, from + 5);
   $('#upnext').innerHTML = up.length ? up.map(r => dayRow(r)).join('') : '<li class="minor">Nothing left on this leg.</li>';
