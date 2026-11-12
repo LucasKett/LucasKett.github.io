@@ -227,13 +227,15 @@ function planFor(iso, n) {
   [n].concat(T.stops.filter(s => s.n !== n).map(s => s.n)).forEach(k => (S[k].plan || []).forEach(p => { if (labelHas(p[0], iso)) out.push([k, p[1]]); }));
   return out.slice(0, 3);
 }
+const legsOn = d => T.legs.filter(L => L.date === d && L.price[1] > 0);
+const dayLeg = L => '<div class="dayleg">' + icon(L.segs[0][0]) + '<span><b>' + esc(L.title) + '</b>' + (L.time ? '<br>' + esc(L.time) : '') + '<br><span class="mono">' + range(L.price[0], L.price[1]) + (L.est ? ' est.' : '') + '</span></span></div>';
 function dayRow(r, cls) {
   const d = r[0], n = r[1], dt = parseISO(d);
   const c = 'day' + (r[4] ? ' travel' : '') + (d < TODAY ? ' past' : '') + (d === TODAY ? ' now' : '') + (cls ? ' ' + cls : '');
   return '<li class="' + c + '" data-goto="' + n + '" tabindex="0" role="button" aria-label="' + esc(fmtDay(d) + ': ' + r[2]) + '">' +
     '<div class="date">' + dt.getDate() + ' ' + MON[dt.getMonth()] + '<span class="dow">' + DOW[dt.getDay()] + '</span></div>' +
     '<div><div class="where"><span class="dnum' + (S[n].kind === 'pass' ? ' pass' : '') + '" aria-hidden="true">' + n + '</span>' + esc(r[2]) + (r[4] ? ' <span class="pill tag">Travel</span>' : '') + (d === TODAY ? ' <span class="pill acc tag">Today</span>' : '') + '</div>' +
-    '<div class="what">' + esc(r[3]) + '</div></div></li>';
+    '<div class="what">' + esc(r[3]) + '</div>' + (d >= TODAY ? legsOn(d).map(dayLeg).join('') : '') + '</div></li>';
 }
 function renderToday() {
   let h = '';
@@ -252,7 +254,7 @@ function renderToday() {
     h += '<p class="t-date">' + esc(fmtDay(TODAY)) + '</p><h2 class="t-title">China leg done</h2><p class="t-sum">In Hanoi from ' + esc(fmtDay(TRIP_END)) + '.</p>';
   } else {
     const i = T.days.findIndex(x => x[0] === TODAY), r = T.days[i], s = S[r[1]];
-    const L = T.legs.filter(x => x.date === TODAY);
+    const L = legsOn(TODAY);
     h += '<p class="t-date">Today · ' + esc(fmtDay(TODAY)) + ' · day ' + (i + 1) + ' of ' + T.days.length + '</p><h2 class="t-title">' + esc(r[2]) + '</h2><p class="t-sum">' + esc(r[3]) + '</p>';
     const pl = planFor(TODAY, s.n);
     const dedupe = t => t.indexOf(r[3]) === 0 ? t.slice(r[3].length).trim() : t;
@@ -263,7 +265,7 @@ function renderToday() {
     if (onTrain) h += trow('Tonight', 'On the night train.');
     else if (bed) h += trow('Tonight', '<span><b>' + esc(bed.name) + '</b>' + (bed.price ? ' · ' + esc(bed.price) : '') + '</span>' + contactsOf({ contacts: (bed.contacts || []).slice(0, 1) }));
     const nx = T.days[i + 1];
-    if (nx) h += trow('Tomorrow', '<span><b>' + esc(nx[2]) + '</b>' + (nx[4] ? ' <span class="pill tag">Travel</span>' : '') + '</span><span class="minor">' + esc(nx[3]) + '</span>');
+    if (nx) h += trow('Tomorrow', '<span><b>' + esc(nx[2]) + '</b>' + (nx[4] ? ' <span class="pill tag">Travel</span>' : '') + '</span><span class="minor">' + esc(nx[3]) + '</span>' + legsOn(nx[0]).map(dayLeg).join(''));
     h += '<div class="t-acts">' + gotoBtn(s.n, 'Open ' + s.name) + '<label class="btn-sm" for="ms-' + s.n + '">On the map</label></div>';
   }
   $('#todaycard').innerHTML = '<article class="today">' + h + '</article>';
@@ -301,7 +303,7 @@ function saveLocal() { try { localStorage.setItem('cnv-ticks', JSON.stringify(ti
 const isDone = b => Object.prototype.hasOwnProperty.call(ticks, b.id) ? !!ticks[b.id] : !!b.done;
 function groupOf(b) {
   if (isDone(b)) return 'done';
-  if (b.stop && isPast(b.stop)) return 'gone';
+  if ((b.on && b.on < TODAY) || (b.stop && isPast(b.stop))) return 'gone';
   if (!b.due) return 'go';
   const dl = daysFrom(TODAY, b.due);
   return dl <= 1 ? 'now' : dl <= 10 ? 'soon' : 'later';
@@ -313,7 +315,7 @@ function dueText(b) {
   if (dl === 1) return 'by tomorrow';
   return 'by ' + fmtDay(b.due);
 }
-const GROUPS = [['now', 'Do now', true], ['soon', 'In the next ten days', true], ['later', 'Later', false], ['go', 'As you go', false], ['done', 'Done', false], ['gone', 'Past, never ticked', false]];
+const GROUPS = [['now', 'Do now', true], ['soon', 'In the next ten days', true], ['later', 'Later', false], ['go', 'As you go', false], ['done', 'Done', false], ['gone', 'Past', false]];
 const sortedBookings = () => T.bookings.slice().sort((a, b) => (a.due || '9') < (b.due || '9') ? -1 : (a.due || '9') > (b.due || '9') ? 1 : 0);
 function renderBookings() {
   const items = sortedBookings();

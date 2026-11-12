@@ -8,10 +8,10 @@ const tmp = path.join(root, 'test', 'prerender-src.html'); fs.writeFileSync(tmp,
 const NSTOPS = (raw.match(/\{n:\d+,name:/g) || []).length;
 const D3 = fs.readFileSync('/opt/npm-tools/node_modules/d3/dist/d3.min.js', 'utf8');
 const DOW = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'], MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-const now = new Date(), asof = DOW[now.getDay()] + ' ' + now.getDate() + ' ' + MON[now.getMonth()];
+const now = new Date(Date.now() + 8 * 3600e3 + new Date().getTimezoneOffset() * 60e3), asof = DOW[now.getDay()] + ' ' + now.getDate() + ' ' + MON[now.getMonth()];
 (async () => {
   const browser = await chromium.launch();
-  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, reducedMotion: 'reduce' });
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, reducedMotion: 'reduce', timezoneId: 'Asia/Shanghai' });
   const page = await ctx.newPage(); const errs = [];
   page.on('pageerror', e => errs.push(e.message));
   await page.route('**/*', r => { const u = r.request().url();
@@ -50,7 +50,10 @@ const now = new Date(), asof = DOW[now.getDay()] + ' ' + now.getDate() + ' ' + M
     wrap.querySelectorAll('li[data-goto]').forEach(li => { li.removeAttribute('role'); li.removeAttribute('tabindex'); });
     wrap.querySelectorAll('input[type=checkbox]').forEach(i => i.setAttribute('disabled', ''));
     wrap.querySelectorAll('details.stop[open]').forEach(d => d.removeAttribute('open'));
-    const tc = wrap.querySelector('.today'); if (tc) tc.insertAdjacentHTML('beforeend', '<p class="asof">As of ' + asof + ', when this page was last updated.</p>');
+    const tc = wrap.querySelector('.today');
+    if (tc) { const td = tc.querySelector('.t-date'); if (td) td.textContent = td.textContent.replace(/^Today · /, '');
+      tc.insertAdjacentHTML('beforeend', '<p class="asof">Page last updated ' + asof + '. If that was a while ago, later days are under Coming up.</p>'); }
+    wrap.querySelectorAll('.day .pill.acc.tag').forEach(e => e.remove());
     const note = wrap.querySelector('#mapnote'); if (note) note.setAttribute('hidden', '');
     return { html: wrap.outerHTML, mk: svg.querySelectorAll('.mk').length, labels: (labels.match(/<label/g) || []).length, pops: wrap.querySelectorAll('.pop').length, cards: wrap.querySelectorAll('details.stop').length, vb: W + 'x' + H };
   }, asof);

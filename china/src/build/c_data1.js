@@ -77,7 +77,7 @@ TRIP.stops = [
 {n:5,name:"Dunhuang Yardang",what:"wind-carved clay formations out in the Gobi",zh:"敦煌雅丹国家地质公园",cc:"China",lat:40.52,lon:93.12,pid:"",q:"Dunhuang Yardang National Geopark",kind:"pass",
  dates:"Thu 12 Nov",len:"Day trip",
  blurb:"About 180 km west of Dunhuang: ranks of eroded clay ridges standing out of flat black gravel. The closest thing on the route to Mangystau.",
- plan:[["Thu 12 Nov","Optional, only if you add a night in Dunhuang. Shared car about ¥150–200 a seat plus about ¥230 in tickets (Yangguan, Yumen Pass, Yardang)."]],
+ plan:[["Optional","Only if you add a night in Dunhuang. Shared car about ¥150–200 a seat plus about ¥230 in tickets (Yangguan, Yumen Pass, Yardang)."]],
  tips:[["warn","Transport and the ticket aren't checked yet. Ask the hostel about a shared car or their day trip (est. ¥150–250, £17–28)."]],
  links:[]},
 
