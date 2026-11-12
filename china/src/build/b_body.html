@@ -1,0 +1,86 @@
+<div class="wrap nojs" id="wrap">
+<input type="radio" name="view" id="v-today" class="vr" checked aria-label="Today">
+<input type="radio" name="view" id="v-route" class="vr" aria-label="Route">
+<input type="radio" name="view" id="v-days" class="vr" aria-label="Day by day">
+<input type="radio" name="view" id="v-book" class="vr" aria-label="Bookings">
+<input type="radio" name="view" id="v-cost" class="vr" aria-label="Costs">
+<p class="jserr" id="jserr" hidden></p>
+<main class="views">
+  <section class="view" id="today" aria-label="Today">
+    <header class="top">
+      <p class="eyebrow">Overland · 5 Nov – 21 Dec 2026 · China, Vietnam</p>
+      <h1>Kashgar <span class="to">to</span> Hanoi</h1>
+    </header>
+    <div id="todaycard"></div>
+    <div class="stats" id="stats"></div>
+    <section class="block" aria-labelledby="h-up"><h2 class="bh" id="h-up">Coming up</h2><ul class="days mini" id="upnext"></ul></section>
+    <section class="block" aria-labelledby="h-bn"><h2 class="bh" id="h-bn">Book next</h2><div class="booknext" id="booknext"></div></section>
+    <details class="about"><summary>About this plan<span class="chev" aria-hidden="true"></span></summary>
+      <p>Draft plan: four days of Uyghur Kashgar, the desert at Dunhuang, the Tibetan monastery town of Xiahe and three nights with a friend in Lanzhou. Then Xi'an with Huashan (and your birthday), Chengdu, Emei Shan and the Leshan Buddha, and Chongqing, before the old caravan village of Shaxi and the salt village of Nuodeng. A hop into Vietnam resets the 30-day visa clock, then a week in the Yuanyang terraces and the Yao markets on the border. Night trains in hard sleeper do the long distances. Prices in £, contacts for every bed.</p>
+      <p>Use the tabs at the bottom. On the Route tab, tap the map to open it full screen, then tap a number for that stop.</p>
+      <p><a class="prevleg" href="https://lucaskett.github.io/" target="_blank" rel="noopener">← Previous leg: Almaty to Kashgar</a></p>
+    </details>
+  </section>
+
+  <section class="view" id="route" aria-label="Route">
+    <div class="routegrid">
+      <div class="mapcol">
+        <h2 class="sr-only" id="maptitle">Route map with 23 numbered stops from Kashgar to Hanoi</h2>
+        <div class="mapwrap" id="mapwrap">
+          <div class="mapbox" id="mapbox">
+            <div class="mapinner" id="mapinner"><svg id="map" role="img" aria-label="Map of the route from the Irkeshtam pass across China to Hanoi, with numbered stops"></svg></div>
+            <label class="mbtn openmap" for="ms-open"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 7V3h4M13 3h4v4M17 13v4h-4M7 17H3v-4"/></svg>Open map</label>
+            <label class="mbtn mapclose" for="ms-none"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5 5 15"/></svg>Close</label>
+            <div class="zoom">
+              <button type="button" id="zin" aria-label="Zoom in"><svg viewBox="0 0 20 20"><path d="M10 4v12M4 10h12"/></svg></button>
+              <button type="button" id="zout" aria-label="Zoom out"><svg viewBox="0 0 20 20"><path d="M4 10h12"/></svg></button>
+              <button type="button" id="zreset" aria-label="Show the whole route"><svg viewBox="0 0 20 20"><path d="M3 7V3h4M13 3h4v4M17 13v4h-4M7 17H3v-4"/></svg></button>
+            </div>
+            <details class="mapkey"><summary class="mbtn">Key</summary><div class="legend" id="legend2"></div></details>
+            <div class="mapnote" id="mapnote">Loading the map…</div>
+          </div>
+          <div class="pops" id="pops"></div>
+        </div>
+        <div class="legend" id="legend" aria-label="Map key">
+          <span><svg viewBox="0 0 34 14" aria-hidden="true"><path d="M2 7h30" stroke="var(--road)" stroke-width="2.6" stroke-linecap="round"/></svg>Bus or car</span>
+          <span><svg viewBox="0 0 34 14" aria-hidden="true"><path d="M2 7h30" stroke="var(--rail)" stroke-width="5"/><path d="M2 7h30" stroke="var(--panel)" stroke-width="1.6" stroke-dasharray="4 4"/></svg>Train</span>
+          <span><svg viewBox="0 0 34 14" aria-hidden="true"><path d="M2 7h30" stroke="var(--road)" stroke-width="2.4" stroke-dasharray="6 4"/></svg>Day trip</span>
+          <span><svg viewBox="0 0 34 14" aria-hidden="true"><circle cx="10" cy="7" r="6" fill="var(--ink)"/><circle cx="26" cy="7" r="5.2" fill="var(--panel)" stroke="var(--ink)" stroke-width="1.6"/></svg>Sleep · pass through</span>
+          <span><svg viewBox="0 0 34 14" aria-hidden="true"><path d="M4 12 12 2M10 12 18 2M16 12 24 2M22 12 30 2" fill="none" stroke="var(--mtn)" stroke-width="1.1" stroke-opacity=".7"/></svg>Mountains</span>
+          <span><svg viewBox="0 0 34 14" aria-hidden="true"><path d="M2 9c6-6 10 2 16-3s10 1 14-2" fill="none" stroke="var(--river)" stroke-width="1.6"/></svg>River, lake</span>
+        </div>
+      </div>
+      <div class="listcol">
+        <h2 class="vh">Stops<small id="stopsum"></small></h2>
+        <div class="stoplist" id="stoplist"></div>
+        <details class="note"><summary>How the map is drawn<span class="chev" aria-hidden="true"></span></summary>
+          <p class="caveat">The Vietnamese roads follow TomTom's routes. TomTom has no roads in China, so Chinese roads and every train line are drawn straight between towns along the real corridor. Prices marked <span class="pill">est.</span> are estimates, not quotes. Arrows show the direction of travel.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="view" id="days" aria-label="Day by day"><h2 class="vh">Day by day<small id="daysum"></small></h2><div id="daylist"></div></section>
+  <section class="view" id="book" aria-label="Bookings"><h2 class="vh">Bookings<small id="booksum"></small></h2><div id="booklist"></div></section>
+  <section class="view" id="cost" aria-label="Costs"><h2 class="vh">Costs<small>Rates: £1 ≈ ¥8.9 ≈ 34,500 dong ≈ $1.34 (24–26 Oct 2026)</small></h2><div id="costlist"></div></section>
+</main>
+
+<footer>
+  <details><summary>Notes and sources<span class="chev" aria-hidden="true"></span></summary>
+    <div class="fin">
+      <div>Rates used: £1 ≈ ¥8.9 ≈ 34,500 Vietnamese dong ≈ $1.34 (24–26 Oct 2026). <span id="geosrc">Country borders load from a public map file when the page opens.</span></div>
+      <div>Photos aren't embedded: image sites can't be loaded here, so each stop links to a Google Images search instead.</div>
+      <ul id="sources"></ul>
+    </div>
+  </details>
+</footer>
+
+<nav class="tabbar" aria-label="Sections">
+  <label for="v-today"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>Today</label>
+  <label for="v-route"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4 3.5 6v14L9 18l6 2 5.5-2V4L15 6 9 4Z"/><path d="M9 4v14M15 6v14"/></svg>Route</label>
+  <label for="v-days"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>Days</label>
+  <label for="v-book"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="m8.2 12.2 2.6 2.6 5-5.4"/></svg>Book<span class="tbadge" id="bookbadge"></span></label>
+  <label for="v-cost"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 6.5c-.7-1.5-2-2.3-3.7-2.3-2.3 0-3.8 1.6-3.8 3.8V20M6 12.5h7M5.5 20h12"/></svg>Costs</label>
+</nav>
+</div>
+<!--/wrap-->
