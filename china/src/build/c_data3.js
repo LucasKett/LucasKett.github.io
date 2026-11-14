@@ -111,7 +111,7 @@ TRIP.bookings = [
 {id:"dunbed",title:"Dunhuang bed, 3 nights",when:"Tue 10 – Fri 13 Nov",due:"2026-11-08",on:"2026-11-10",done:true,stop:4,note:"Booked on Trip.com."},
 {id:"mogao",title:"Mogao Caves ticket, English tour",when:"Thu 12 Nov",due:"2026-11-11",on:"2026-11-12",stop:4,note:"Official WeChat mini program 莫高窟参观预约网, real name and passport number. English tour ¥258 (£29) at about 9:00, 12:00 or 14:30; the Chinese tour is ¥238."},
 {id:"zytrain",title:"Fast train D2759 Dunhuang → Lanzhou",when:"Fri 13 Nov, 07:30",due:"2026-11-10",on:"2026-11-13",stop:4,note:"On Trip.com or at a station counter, ¥324, in at 14:48. D2739 at 08:40 is the backup. The Xiahe bus on Sat 14 is bought at Lanzhou South bus station."},
-{id:"xiahebed",title:"Xiahe bed, 3 nights",when:"Sat 14 – Tue 17 Nov",due:"2026-11-12",on:"2026-11-14",stop:7,note:"Nirvana Hotel by phone or Trip.com, or the Overseas Tibetan Hotel on Trip.com or Booking.com. Ask about heating."},
+{id:"xiahebed",title:"Xiahe bed, 2 nights",when:"Sat 14 – Mon 16 Nov",due:"2026-11-12",on:"2026-11-14",done:true,stop:7,note:"Booked 2 nights; extend on the spot for a third if you want it."},
 {id:"lzxa",title:"Fast train Lanzhou West → Xi'an North",when:"Thu 19 Nov, morning",due:"2026-11-16",on:"2026-11-19",stop:6,note:"On Trip.com or at a station counter. A morning train leaves the afternoon for the Terracotta Army."},
 {id:"xianbed",title:"Xi'an hostel, 3 nights",when:"Thu 19 – Sun 22 Nov",due:"2026-11-17",on:"2026-11-19",stop:8,note:"Desti Youth Park (Bell & Drum Tower) on Trip.com or Booking.com."},
 {id:"terracotta",title:"Terracotta Army ticket",when:"For Thu 19 Nov",due:"2026-11-17",on:"2026-11-19",stop:9,note:"Official WeChat mini program, real name and passport number. About ¥120 (£13.50)."},
