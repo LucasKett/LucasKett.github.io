@@ -16,7 +16,7 @@ TRIP.wp = {
   mile:[103.41,24.41], puzhehei:[104.08,24.13], guangnan:[105.06,24.05],
   emei:[103.48,29.60], xichang:[102.26,27.89], panzhihua:[101.72,26.58], guangtong:[101.85,25.33],
   zhangye:[100.45,38.93], wuwei:[102.64,37.93], jianchuan:[99.90,26.54], xiaguan:[100.23,25.60], yunlong:[99.37,25.88], chuxiong:[101.55,25.04], hanzhong:[107.02,33.07], guangyuan:[105.84,32.44], mianyang:[104.68,31.47],
-  langmusi:[102.63,34.09], zoige:[102.96,33.58], chuanzhusi:[103.64,32.79], jiuzhai:[103.92,33.26], maoxian:[103.85,31.68], wenchuan:[103.59,31.48], dujiangyan:[103.62,31.00],
+  huanglong:[103.83,32.74], langmusi:[102.63,34.09], zoige:[102.96,33.58], chuanzhusi:[103.64,32.79], jiuzhai:[103.92,33.26], maoxian:[103.85,31.68], wenchuan:[103.59,31.48], dujiangyan:[103.62,31.00],
   lijiang:[100.23,26.87], qiaotou:[100.08,27.18],
   manhao:[103.37,23.03], mengla:[103.03,22.58], jinshuihe:[103.33,22.62], jph1:[103.62,22.62]
 };
@@ -32,8 +32,7 @@ TRIP.legs = [
 {id:"c5",a:4,b:6,date:"2026-11-13",segs:[["rail",[4,"guazhou","yumen","jiayuguan","jiuquan","zhangye","menyuan","xining",6]]],title:"Fast train D2759 to Lanzhou",time:"07:30 → 14:48 Lanzhou West, via Xining (D2739 at 08:40 is the backup)",tt:"About 1,100 km, 7 h 20 min",price:[45.5,45.5],ptxt:"¥324 second class at face value; price shown is Trip.com, about 25% more",status:"week"},
 {id:"c6",a:6,b:7,date:"2026-11-14",segs:[["road",[6,"linxia",7]]],title:"Bus to Xiahe from Lanzhou South bus station",time:"07:30, 08:30 or 10:30 (also 14:00, 15:00); about 3.5 h",tt:"About 250 km",price:[8.4,8.4],ptxt:"¥75",est:true,status:"week"},
 {id:"c7",a:7,b:8,date:"2026-11-17",segs:[["road",[7,"hezuo","luqu","langmusi","zoige","chuanzhusi",8]]],title:"Hitching with your friend via Langmusi and the Zoige grasslands",time:"All day; start at first light. Sleep at Langmusi or Zoige if it stalls",tt:"About 440 km",price:[0,0],ptxt:"Hitching: free",est:true,status:"day"},
-{id:"c8",a:8,b:8,date:"2026-11-18",segs:[["day",[8,"chuanzhusi","jiuzhai",8]]],title:"Jiuzhaigou and back: Emma's transport or a hitch",time:"About 1½–2 h each way; last entry 14:00",tt:"About 100 km each way",price:[0,0],ptxt:"Emma's price not found; hitching free",est:true,status:"day"},
-{id:"c9",a:8,b:9,date:"2026-11-19",segs:[["rail",[8,"maoxian",9]]],title:"Train from Songpan station to Chengdu East",time:"08:34, 12:18, 13:33, 15:43 and later; about 2 h",tt:"About 300 km down the Min valley",price:[18.6,18.6],ptxt:"¥133 second class at face value; price shown is Trip.com, about 25% more",status:"week"},
+{id:"c9",a:8,b:9,date:"2026-11-18",segs:[["road",[8,"huanglong","chuanzhusi"]],["rail",["chuanzhusi",8,"maoxian",9]]],title:"Huanglong, then the train from Huanglong Jiuzhai station to Chengdu East",time:"15:31 (C5754), or 18:18 as a fallback; about 2–2½ h",tt:"About 60 km by road, about 330 km by rail",price:[23,23.4],ptxt:"About ¥30 to the station + ¥141–143 second class at face value; train shown at Trip.com price",est:true,status:"week"},
 {id:"c10",a:9,b:9,date:"2026-11-20",segs:[["day",[9,"dujiangyan",9]]],title:"Metro, intercity train and bus 14 to Panda Valley and back",time:"75–90 min each way",tt:"About 60 km each way",price:[3.6,5.2],ptxt:"About ¥16–23 each way",est:true,status:"day"},
 {id:"c11",a:9,b:10,date:"2026-11-22",segs:[["day",[9,10,9]]],title:"Fast train to Guanghan North, then a taxi",time:"About 18 min + 16 min each way",tt:"About 40 km each way",price:[9.5,9.5],ptxt:"About ¥18 train + ¥20 taxi each way",est:true,status:"day"},
 {id:"c12",a:9,b:11,date:"2026-11-23",segs:[["rail",[9,"emei",11]]],title:"Fast train Chengdu East → Emeishan, then bus 12 to Baoguo",time:"About 1 h; trains through the day",tt:"About 150 km",price:[5.0,8.8],ptxt:"Est. ¥35–60, plus the local bus at face value; price shown is Trip.com, about 25% more",est:true,status:"week"},
@@ -71,8 +70,8 @@ TRIP.days = [
 ["2026-11-15",7,"Xiahe","Kora at dawn, monastery tour.",0],
 ["2026-11-16",7,"Xiahe","Gongtang Chorten, the hills or the Sangke grasslands.",0],
 ["2026-11-17",8,"Xiahe → Langmusi → Zoige → Songpan","Hitching south with your friend from first light.",1],
-["2026-11-18",8,"Songpan → Jiuzhaigou → Songpan","Lakes and waterfalls, a day on the boardwalks.",0],
-["2026-11-19",9,"Songpan → Chengdu","Train down the Min valley, about 2 h; your friend hitches on.",1],
+["2026-11-18",9,"Songpan → Huanglong → Chengdu","Terraced pools, then the 15:31 train.",1],
+["2026-11-19",9,"Chengdu","Teahouse, Wenshu Monastery.",0],
 ["2026-11-20",9,"Chengdu → Panda Valley → Chengdu","Pandas and the Dujiangyan river works.",0],
 ["2026-11-21",9,"Chengdu","Birthday, no travel. Teahouse, Wenshu Monastery, NU Lab if you fancy it.",0],
 ["2026-11-22",10,"Chengdu → Sanxingdui → Chengdu","Bronze masks, 3–4 h in the museum.",0],
@@ -116,9 +115,10 @@ TRIP.bookings = [
 {id:"mogao",title:"Mogao Caves ticket, English tour",when:"Thu 12 Nov",due:"2026-11-11",on:"2026-11-12",stop:4,note:"Official WeChat mini program 莫高窟参观预约网, real name and passport number. English tour ¥258 (£29) at about 9:00, 12:00 or 14:30; the Chinese tour is ¥238."},
 {id:"zytrain",title:"Fast train D2759 Dunhuang → Lanzhou",when:"Fri 13 Nov, 07:30",due:"2026-11-10",on:"2026-11-13",stop:4,note:"On Trip.com or at a station counter, ¥324, in at 14:48. D2739 at 08:40 is the backup. The Xiahe bus on Sat 14 is bought at Lanzhou South bus station."},
 {id:"xiahebed",title:"Xiahe bed, 3 nights",when:"Sat 14 – Tue 17 Nov",due:"2026-11-12",on:"2026-11-14",stop:7,note:"Nirvana Hotel by phone or Trip.com, or the Overseas Tibetan Hotel on Trip.com or Booking.com. Ask about heating."},
-{id:"emmabed",title:"Songpan bed, 2 nights",when:"Tue 17 – Thu 19 Nov",due:"2026-11-16",on:"2026-11-17",stop:8,note:"Emma's Guesthouse: +86 131 0837 2888 (one listing). Ask her price for the Jiuzhaigou run on Wed 18."},
-{id:"sptrain",title:"Train Songpan → Chengdu East",when:"Thu 19 Nov",due:"2026-11-17",on:"2026-11-19",stop:8,note:"Departures 08:34 to 21:20, ¥133. Your friends could book it on 12306 with your passport for face value."},
-{id:"cdbed",title:"Chengdu hostel, 4 nights",when:"Thu 19 – Mon 23 Nov",due:"2026-11-18",on:"2026-11-19",stop:9,note:"Poshpacker Mix (a friend's pick) or Sonderia/Lazybones. The Niuwangmiao metro area was also suggested."},
+{id:"emmabed",title:"Songpan bed, 1 night",when:"Tue 17 Nov",due:"2026-11-16",on:"2026-11-17",stop:8,note:"Emma's Guesthouse: +86 131 0837 2888 (one listing)."},
+{id:"hltix",title:"Huanglong ticket",when:"Wed 18 Nov",due:"2026-11-17",on:"2026-11-18",stop:8,note:"Online with your passport. ¥60 off-season (one guide)."},
+{id:"sptrain",title:"Train Huanglong Jiuzhai → Chengdu East",when:"Wed 18 Nov, 15:31",due:"2026-11-17",on:"2026-11-18",stop:8,note:"C5754; 18:18 as a fallback. ¥141–143. Your friends could book it on 12306 with your passport for face value."},
+{id:"cdbed",title:"Chengdu hostel, 5 nights",when:"Wed 18 – Mon 23 Nov",due:"2026-11-17",on:"2026-11-18",stop:9,note:"Poshpacker Mix (a friend's pick) or Sonderia/Lazybones. The Niuwangmiao metro area was also suggested."},
 {id:"panda",title:"Panda Valley ticket",when:"Fri 20 Nov",due:"2026-11-19",on:"2026-11-20",stop:9,note:"Online only, up to 7 days ahead: the Panda Valley site or WeChat account, passport number. ¥55."},
 {id:"sxd",title:"Sanxingdui Museum ticket",when:"Sun 22 Nov",due:"2026-11-17",on:"2026-11-22",stop:10,note:"On sale at 20:00 on Tue 17 Nov through the museum's WeChat account; choose 护照 (passport). ¥72."},
 {id:"emeibed",title:"Emei bed, 2 nights",when:"Mon 23 – Wed 25 Nov",due:"2026-11-21",on:"2026-11-23",stop:11,note:"Teddy Bear Hotel."},
@@ -142,7 +142,7 @@ TRIP.bookings = [
 TRIP.fees = [
 ["Mogao Caves, A ticket",26.66,26.66,4],
 ["Labrang Monastery",4.5,4.5,7],
-["Jiuzhaigou: entry and park bus, off-season",17.9,17.9,8],
+["Huanglong, off-season",6.7,6.7,8],
 ["Panda Valley",6.16,6.16,9],
 ["Sanxingdui Museum",8.06,8.06,10],
 ["Emei Shan: entry, park bus, summit cable car",28,40.9,11],
@@ -276,7 +276,7 @@ TRIP.regions = [
 {k:6,name:"Vietnam",stops:[19,23]}
 ];
 TRIP.visa = "2026-12-05";
-TRIP.py = {1:"Yī'ěrkèshítǎn kǒu'àn",2:"Kāshí",3:"Tǔlǔfān běi zhàn",4:"Dūnhuáng",5:"Dūnhuáng Yǎdān",6:"Lánzhōu",7:"Xiàhé, Lābǔléng sì",8:"Sōngpān, Jiǔzhàigōu",9:"Chéngdū",10:"Sānxīngduī bówùguǎn",
+TRIP.py = {1:"Yī'ěrkèshítǎn kǒu'àn",2:"Kāshí",3:"Tǔlǔfān běi zhàn",4:"Dūnhuáng",5:"Dūnhuáng Yǎdān",6:"Lánzhōu",7:"Xiàhé, Lābǔléng sì",8:"Sōngpān, Huánglóng",9:"Chéngdū",10:"Sānxīngduī bówùguǎn",
 11:"Éméi shān, Bàoguó sì",12:"Lèshān dàfó",13:"Chóngqìng",14:"Wǔlóng, Tiānshēng sān qiáo",15:"Shāxī gǔzhèn",16:"Hǔtiào xiá",17:"Kūnmíng",18:"Hékǒu kǒu'àn",20:"Jiànshuǐ",21:"Yuányáng tītián, Pǔgāo lǎozhài",22:"Jīnpíng"};
 /* Climate normals 1991–2020 from Wikipedia's tables: month -> [mean daily max, mean daily min, wet days], rounded. Shown for the next stop only. */
 TRIP.wx = {
